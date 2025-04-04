@@ -13,13 +13,13 @@ public class Achievement extends BaseEntity {
     @Column(nullable = false)
     private boolean unlocked;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "fox_id", nullable = false)
+    private Fox fox;
 
-    public Achievement(String name, boolean unlocked, User user) {
+    public Achievement(String name, boolean unlocked, Fox fox) {
         this.name = name;
         this.unlocked = unlocked;
-        this.user = user;
+        this.fox = fox;
     }
 
     public Achievement() {
@@ -34,8 +34,8 @@ public class Achievement extends BaseEntity {
         return unlocked;
     }
 
-    public User getUser() {
-        return user;
+    public Fox getFox() {
+        return fox;
     }
 
     public void setName(String name) {
@@ -46,8 +46,8 @@ public class Achievement extends BaseEntity {
         this.unlocked = unlocked;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setFox(Fox fox) {
+        this.fox = fox;
     }
 }
 

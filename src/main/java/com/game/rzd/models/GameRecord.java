@@ -12,13 +12,13 @@ public class GameRecord extends BaseEntity {
     @Column(nullable = false)
     private int score;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "fox_id", nullable = false)
+    private Fox fox;
 
-    public GameRecord(Game game, int score, User user) {
+    public GameRecord(Game game, int score, Fox fox) {
         this.game = game;
         this.score = score;
-        this.user = user;
+        this.fox = fox;
     }
 
     public GameRecord() {
@@ -33,8 +33,8 @@ public class GameRecord extends BaseEntity {
         return score;
     }
 
-    public User getUser() {
-        return user;
+    public Fox getFox() {
+        return fox;
     }
 
     public void setGame(Game game) {
@@ -45,7 +45,7 @@ public class GameRecord extends BaseEntity {
         this.score = score;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setFox(Fox fox) {
+        this.fox = fox;
     }
 }

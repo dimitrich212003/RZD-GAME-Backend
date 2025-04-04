@@ -1,4 +1,4 @@
 package com.game.rzd.services;
 
-public interface userService {
+public interface FoxService {
 }
