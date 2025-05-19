@@ -1,8 +1,10 @@
 package com.game.rzd;
 
-import com.game.rzd.models.*;
+import com.game.rzd.domain.models.Achievement;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -27,6 +29,10 @@ public class DataInitializer implements CommandLineRunner {
 //
 //        GameRecord gameRecord = new GameRecord(Game.pacmanStore, 0, null);
 //        gameRecord.setUser(user);
+
+        List<Achievement> achievementsList = List.of(
+                new Achievement()
+        );
     }
 
 }
