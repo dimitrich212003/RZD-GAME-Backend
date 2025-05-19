@@ -10,6 +10,8 @@ import com.game.rzd.domain.models.GameRecord;
 import com.game.rzd.domain.repositories.FoxRepository;
 import com.game.rzd.domain.repositories.GameRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +56,7 @@ public class GameRecordServiceImpl implements GameRecordService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "foxes", key = "#foxId")
     public GameRecordResponseDTO updateRecord(UUID foxId, GameRecordRequestDTO requestDTO) {
         Fox fox = foxRepository.findById(foxId).orElseThrow(() -> new IllegalArgumentException("Fox not found " + foxId));
         GameRecord record = gameRecordRepository.findGameRecordByFoxAndGame(fox, requestDTO.getGame()).orElseThrow(() -> new IllegalArgumentException("record not found " + foxId + " " + requestDTO.getGame().name()));
@@ -64,6 +67,7 @@ public class GameRecordServiceImpl implements GameRecordService {
 
     @Override
     @Transactional
+    @Cacheable(value = "foxes", key = "#foxId")
     public GameRecordResponseDTO getRecord(UUID foxId, Game game) {
         Fox fox = foxRepository.findById(foxId).orElseThrow(() -> new IllegalArgumentException("Fox not found " + foxId));
         GameRecord record = gameRecordRepository.findGameRecordByFoxAndGame(fox, game).orElseThrow(() -> new IllegalArgumentException("record not found " + foxId + " " + game.name()));

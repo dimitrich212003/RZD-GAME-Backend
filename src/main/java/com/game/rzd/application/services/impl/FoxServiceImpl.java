@@ -10,6 +10,8 @@ import com.game.rzd.application.services.DTOs.responses.FoxResponseDTO;
 import com.game.rzd.application.services.FoxService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -50,6 +52,7 @@ public class FoxServiceImpl implements FoxService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "foxes", key = "#id")
     public FoxResponseDTO updateFoxName(UUID id, String foxName) {
         Fox fox = foxRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("fox not found"));
         fox.setName(foxName);
@@ -59,6 +62,7 @@ public class FoxServiceImpl implements FoxService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "foxes", key = "#id")
     public FoxResponseDTO updateGameLevel(UUID id, String gameLevel) {
         Fox fox = foxRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("fox not found"));
         fox.setGameLevel(gameLevel);
@@ -68,6 +72,7 @@ public class FoxServiceImpl implements FoxService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "foxes", key = "#id")
     public FoxResponseDTO addCoins(UUID id, int coins) {
         System.out.println("Adding coins: foxId= "+ id + ", coins= " + coins);
         try {
@@ -86,6 +91,7 @@ public class FoxServiceImpl implements FoxService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "foxes", key = "#id")
     public FoxResponseDTO getFoxById(UUID id) {
         Fox fox = foxRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("fox not found"));
         return foxMapper.toResponse(fox);

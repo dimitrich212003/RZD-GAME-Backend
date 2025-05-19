@@ -10,6 +10,8 @@ import com.game.rzd.application.services.DTOs.requests.AchievementRequestDTO;
 import com.game.rzd.application.services.DTOs.responses.AchievementResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,7 @@ public class AchievementServiceImpl implements AchievementService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "foxes", key = "#foxId")
     public List<AchievementResponseDTO> getFoxAchievements(UUID foxId) {
         Fox fox = foxRepository.findById(foxId).orElseThrow(() -> new EntityNotFoundException("fox not found"));
         List<Achievement> achievements = achievementRepository.findAchievementsByFox(fox).orElseThrow(() -> new EntityNotFoundException("Achievements not found"));
@@ -48,6 +51,7 @@ public class AchievementServiceImpl implements AchievementService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "foxes", key = "#foxId")
     public AchievementResponseDTO unlockAchievement(UUID foxId, int code) {
         Fox fox = foxRepository.findById(foxId).orElseThrow(() -> new EntityNotFoundException("fox not found"));
 
